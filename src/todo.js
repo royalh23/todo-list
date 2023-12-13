@@ -6,3 +6,5 @@ class ToDo {
     this.priority = priority;
   }
 }
+
+export default ToDo;

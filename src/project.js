@@ -4,3 +4,5 @@ class Project {
     this.toDos = [];
   }
 }
+
+export default Project;

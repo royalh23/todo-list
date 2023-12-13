@@ -12,6 +12,10 @@ body {
   padding: 0;
 }
 
+.selected {
+  background-color: #CCC;
+}
+
 #content {
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -31,10 +35,29 @@ body {
 }
 
 .sidebar {
+  padding: 20px;
   background-color: #DDD;
 }
 
-.projects-title {
+.title {
   font-weight: bold;
   font-size: 1.8rem;
+}
+
+.app-item {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 30px 100px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+}
+
+img[src$="svg"] {
+  width: 25px;
+  height: 25px;
+}
+
+.main {
+  padding: 30px 100px;
 }

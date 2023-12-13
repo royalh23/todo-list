@@ -8,7 +8,12 @@ const App = (function() {
     projects.push(defaultProject);
   }
 
-  return {projects, initializeProjects};
+  function createProject(input) {
+    const newProject = new Project(input.value);
+    projects.push(newProject);
+  }
+
+  return {projects, initializeProjects, createProject};
 })();
 
 export default App;

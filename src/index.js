@@ -64,9 +64,111 @@ import App from "./app-logic";
     cancelBtn.addEventListener("click", removeInput);
   }
 
+  function createToDoForm() {
+    // Create a helper for setting attributes
+    function setAttributes(el, attrs) {
+      Object.keys(attrs).forEach(attr => {
+        el.setAttribute(attr, attrs[attr]);
+      });
+    }
+
+    main.removeChild(addTask);
+
+    // Create elements
+    const todoForm = document.createElement("form");
+    const title = document.createElement("div");
+    const titleLabel = document.createElement("label");
+    const titleInput = document.createElement("input");
+    const description = document.createElement("div");
+    const descriptionLabel = document.createElement("label");
+    const descriptionInput = document.createElement("textarea");
+    const dueDate = document.createElement("div");
+    const dueDateLabel = document.createElement("label");
+    const dueDateInput = document.createElement("input");
+    const priority = document.createElement("div");
+    const priorityLabel = document.createElement("label");
+    const prioritySelect = document.createElement("select");
+    const priorityData = ["low", "medium", "urgent"];
+    const buttons = document.createElement("div");
+    const addBtn = document.createElement("button");
+    const cancelBtn = document.createElement("button");
+
+    // Set text content
+    titleLabel.textContent = "Title:";
+    descriptionLabel.textContent = "Description:";
+    dueDateLabel.textContent = "Due date:";
+    priorityLabel.textContent = "Priority:";
+    addBtn.textContent = "Add";
+    cancelBtn.textContent = "Cancel";
+    priorityData.forEach(data => {
+      const option = document.createElement("option");
+      option.textContent = data;
+      prioritySelect.append(option);
+    });
+
+    // Set attributes
+    todoForm.id = "todo-form";
+    titleLabel.setAttribute("for", "title");
+    setAttributes(titleInput, {
+      "type": "text",
+      "name": "title",
+      "id": "title",
+      "placeholder": "Grocery",
+    });
+
+    descriptionLabel.setAttribute("for", "dscrp");
+    setAttributes(descriptionInput, {
+      "name": "dscrp",
+      "id": "dscrp",
+      "placeholder": "Buy bread, etc.",
+      "rows": "5",
+    });
+
+    dueDateLabel.setAttribute("for", "due-date");
+    setAttributes(dueDateInput, {
+      "type": "date",
+      "name": "due-date",
+      "id": "due-date",
+    });
+
+    priorityLabel.setAttribute("for", "priority");
+    setAttributes(prioritySelect, {
+      "name": "priority",
+      "id": "priority",
+    });
+
+    cancelBtn.setAttribute("type", "button");
+
+    title.classList.add("task-title");
+    description.classList.add("dscrp");
+    dueDate.classList.add("due-date");
+    priority.classList.add("priority");
+    buttons.classList.add("form-buttons");
+    addBtn.classList.add("add-btn");
+    cancelBtn.classList.add("cancel-btn");
+
+    // Append elements
+    title.append(titleLabel, titleInput);
+    description.append(descriptionLabel, descriptionInput);
+    dueDate.append(dueDateLabel, dueDateInput);
+    priority.append(priorityLabel, prioritySelect);
+    buttons.append(addBtn, cancelBtn);
+    todoForm.append(title, description, dueDate, priority, buttons);
+    main.append(todoForm);
+
+    // Add event listeners
+    addBtn.addEventListener("click", (e) => e.preventDefault());
+    cancelBtn.addEventListener("click", removeTaskForm);
+  }
+
   function removeInput() {
     sidebar.removeChild(sidebar.lastChild);
     sidebar.append(addProject);
+  }
+
+  function removeTaskForm() {
+    main.removeChild(main.lastChild);
+    main.append(addTask);
   }
 
   // Create elements
@@ -100,8 +202,9 @@ import App from "./app-logic";
   projects.classList.add("projects");
   addProject.classList.add("app-item");
 
-  addTask.classList.add("app-item");
   tasksHeader.classList.add("title");
+  tasks.classList.add("tasks");
+  addTask.classList.add("app-item");
 
   // Fill elements
   header.textContent = "ToDo List";
@@ -129,7 +232,8 @@ import App from "./app-logic";
   addTask.append(addTaskIcon, addTaskText);
   main.append(tasksHeader, tasks, addTask);
 
-  // Add event listeners to addProject and addTask elements
+  // Add event listeners to addProject and addTask elements to collect input
+  // from them and create projects and todos correspondingly
   addProject.addEventListener("click", createProjectInput);
-  addTask.addEventListener("click", () => alert("Clicked!"));
+  addTask.addEventListener("click", createToDoForm);
 })();

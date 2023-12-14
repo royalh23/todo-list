@@ -30,13 +30,13 @@ body {
   padding-left: 50px;
   font-size: 2.8rem;
   font-weight: bold;
-  background-color: rgb(0, 179, 255);
   color: white;
+  background-color: #1992d4;
 }
 
 .sidebar {
+  background-color: #e2e8f0;
   padding: 20px;
-  background-color: #DDD;
 }
 
 .title {
@@ -73,7 +73,7 @@ img[src$="svg"] {
   height: 40px;
 }
 
-.add-project-input > button {
+button {
   cursor: pointer;
   color: #fff;
   height: 40px;
@@ -91,5 +91,59 @@ img[src$="svg"] {
 }
 
 .main {
+  background-color: beige;
   padding: 30px 100px;
+}
+
+#todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 600px;
+}
+
+#todo-form label {
+  font-size: 1.3rem;
+}
+
+#todo-form input, 
+#todo-form textarea,
+#todo-form select {
+  border: 0;
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#todo-form input:focus, 
+#todo-form textarea:focus,
+#todo-form select:focus {
+  outline: none;
+  box-shadow: 4px 4px 5px rgb(220, 220, 220);
+}
+
+textarea {
+  resize: none;
+}
+
+#todo-form select {
+  background-color: #fff;
+}
+
+.task-title,
+.dscrp,
+.due-date,
+.priority {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+} 
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.form-buttons > button {
+  width: 100px;
 }

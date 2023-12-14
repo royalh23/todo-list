@@ -34,18 +34,18 @@ import App from "./app-logic";
     removeInput();
   }
 
-  function createAddProjectInput() {
+  function createProjectInput() {
     sidebar.removeChild(addProject);
 
     // Create elements
-    const addProjectInput = document.createElement("div");
-    const addProjectInputField = document.createElement("input");
+    const projectInput = document.createElement("div");
+    const projectInputField = document.createElement("input");
     const addBtn = document.createElement("button");
     const cancelBtn = document.createElement("button");
 
     //Add classes
-    addProjectInput.classList.add("add-project-input");
-    addProjectInputField.classList.add("add-project-input-field");
+    projectInput.classList.add("add-project-input");
+    projectInputField.classList.add("add-project-input-field");
     addBtn.classList.add("add-btn");
     cancelBtn.classList.add("cancel-btn");
 
@@ -54,12 +54,12 @@ import App from "./app-logic";
     cancelBtn.textContent = "Cancel";
 
     // Append elements
-    addProjectInput.append(addProjectInputField, addBtn, cancelBtn);
-    sidebar.append(addProjectInput);
+    projectInput.append(projectInputField, addBtn, cancelBtn);
+    sidebar.append(projectInput);
 
     // Add event listeners to buttons
     addBtn.addEventListener("click", () => {
-      addNewProject(addProjectInputField);
+      addNewProject(projectInputField);
     });
     cancelBtn.addEventListener("click", removeInput);
   }
@@ -130,6 +130,6 @@ import App from "./app-logic";
   main.append(tasksHeader, tasks, addTask);
 
   // Add event listeners to addProject and addTask elements
-  addProject.addEventListener("click", createAddProjectInput);
+  addProject.addEventListener("click", createProjectInput);
   addTask.addEventListener("click", () => alert("Clicked!"));
 })();

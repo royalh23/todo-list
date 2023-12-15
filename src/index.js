@@ -67,6 +67,10 @@ import App from "./app-logic";
     App.projects.forEach((project, index) => displayProject(project, index));
   }
 
+  function displayTasks(project) {
+    project.toDos.forEach(task => displayTask(task));
+  }
+
   function addNewProject(input) {
     App.createProject(input);
     projects.textContent = "";
@@ -210,7 +214,7 @@ import App from "./app-logic";
       }
     });
     tasks.textContent = "";
-    selected.toDos.forEach(task => displayTask(task));
+    displayTasks(selected);
     removeTaskForm();
   }
 

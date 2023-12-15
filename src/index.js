@@ -11,7 +11,7 @@ import App from "./app-logic";
     });
   }
 
-  function displayProject(project) {
+  function displayProject(project, index) {
     // Create project elements
     const projectNode = document.createElement("div");
     const projectIcon = new Image();
@@ -22,8 +22,9 @@ import App from "./app-logic";
     projectIcon.alt = "Project Icon";
     projectName.textContent = project.name;
   
-    // Add project elements' classes
+    // Add project elements' classes and dataset
     projectNode.classList.add("app-item");
+    projectNode.dataset.index = `${index}`;
   
     // Append project elements accordingly
     projectNode.append(projectIcon, projectName);
@@ -63,7 +64,7 @@ import App from "./app-logic";
   }
 
   function displayProjects() {
-    App.projects.forEach(project => displayProject(project));
+    App.projects.forEach((project, index) => displayProject(project, index));
   }
 
   function addNewProject(input) {

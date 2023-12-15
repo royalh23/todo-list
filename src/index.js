@@ -11,6 +11,15 @@ import App from "./app-logic";
     });
   }
 
+  function loadProject(e) {
+    const clickedProject = App.projects[e.currentTarget.dataset.index];
+    App.projects.forEach(project => project.selected = false);
+    clickedProject.selected = true;
+    tasksHeader.textContent = clickedProject.name;
+    tasks.textContent = "";
+    displayTasks(clickedProject);
+  }
+
   function displayProject(project, index) {
     // Create project elements
     const projectNode = document.createElement("div");
@@ -29,6 +38,9 @@ import App from "./app-logic";
     // Append project elements accordingly
     projectNode.append(projectIcon, projectName);
     projects.appendChild(projectNode);
+
+    // Add event listener to each project node
+    projectNode.addEventListener("click", loadProject);
   }
 
   function displayTask(task) {

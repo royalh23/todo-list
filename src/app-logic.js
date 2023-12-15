@@ -5,6 +5,7 @@ const App = (function() {
 
   function initializeProjects() {
     const defaultProject = new Project("Default Project");  
+    defaultProject.selected = true;
     projects.push(defaultProject);
   }
 

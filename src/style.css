@@ -76,18 +76,31 @@ img[src$="svg"] {
 button {
   cursor: pointer;
   color: #fff;
+  width: 100px;
   height: 40px;
   border-radius: 10px;
   border: 0;
   font-size: 1.1rem;
 }
 
+button:active {
+  transform: translateY(4px);
+}
+
+.add-btn, .cancel-btn {
+  justify-self: center;
+}
+
 .add-btn {
   background-color: rgb(0, 179, 255);
 }
 
-.cancel-btn {
+.cancel-btn, .remove-btn {
   background-color: rgb(243, 59, 90);
+}
+
+.edit-btn {
+  background-color: rgb(6, 149, 27);
 }
 
 .main {
@@ -115,6 +128,7 @@ button {
   border-radius: 5px;
 }
 
+.add-project-input-field:focus,
 #todo-form input:focus, 
 #todo-form textarea:focus,
 #todo-form select:focus {
@@ -144,6 +158,9 @@ textarea {
   gap: 100px;
 }
 
-.form-buttons > button {
-  width: 100px;
+.tasks > div {
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
 }

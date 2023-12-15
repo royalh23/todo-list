@@ -4,6 +4,13 @@ import Plus from "./svg-icons/plus.svg";
 import App from "./app-logic";
 
 (() => {
+  // Create a helper for setting attributes
+  function setAttributes(el, attrs) {
+    Object.keys(attrs).forEach(attr => {
+      el.setAttribute(attr, attrs[attr]);
+    });
+  }
+
   function displayProject(project) {
     // Create project elements
     const projectNode = document.createElement("div");
@@ -21,6 +28,38 @@ import App from "./app-logic";
     // Append project elements accordingly
     projectNode.append(projectIcon, projectName);
     projects.appendChild(projectNode);
+  }
+
+  function displayTask(task) {
+    // Create elements
+    const taskNode = document.createElement("div");
+    const checkBox = document.createElement("input");
+    const taskTitle = document.createElement("label");
+    const taskDueDate = document.createElement("div");
+    const taskPriority = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    const editBtn = document.createElement("button");
+
+    // Set attributes and text content
+    setAttributes(checkBox, {
+      "name": "task",
+      "type": "checkbox",
+      "id": "task"
+    });
+    taskTitle.setAttribute("for", "task");
+    taskTitle.textContent = task.title;
+    taskDueDate.textContent = task.dueDate;
+    taskPriority.textContent = task.priority;
+    removeBtn.textContent = "Remove";
+    editBtn.textContent = "Edit";
+
+    // Set classes
+    removeBtn.classList.add("remove-btn");
+    editBtn.classList.add("edit-btn");
+
+    // Append elements
+    taskNode.append(checkBox, taskTitle, taskDueDate, taskPriority, removeBtn, editBtn);
+    tasks.append(taskNode);
   }
 
   function displayProjects() {
@@ -65,13 +104,6 @@ import App from "./app-logic";
   }
 
   function createToDoForm() {
-    // Create a helper for setting attributes
-    function setAttributes(el, attrs) {
-      Object.keys(attrs).forEach(attr => {
-        el.setAttribute(attr, attrs[attr]);
-      });
-    }
-
     main.removeChild(addTask);
 
     // Create elements
@@ -157,8 +189,28 @@ import App from "./app-logic";
     main.append(todoForm);
 
     // Add event listeners
-    addBtn.addEventListener("click", (e) => e.preventDefault());
+    addBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const formData = new FormData(todoForm);
+      addNewTask(formData);
+    });
     cancelBtn.addEventListener("click", removeTaskForm);
+  }
+
+  function addNewTask(formData) {
+    // Set a flag for the selected project
+    let selected;
+
+    // Add the task to the selected project only
+    App.projects.forEach(project => {
+      if (project.selected) {
+        project.createToDo(formData);
+        selected = project;
+      }
+    });
+    tasks.textContent = "";
+    selected.toDos.forEach(task => displayTask(task));
+    removeTaskForm();
   }
 
   function removeInput() {
@@ -229,7 +281,6 @@ import App from "./app-logic";
   sidebar.append(addProject);
 
   // Display toDosHeader, toDos, and addToDo
-  addTask.append(addTaskIcon, addTaskText);
   main.append(tasksHeader, tasks, addTask);
 
   // Add event listeners to addProject and addTask elements to collect input

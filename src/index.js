@@ -43,7 +43,7 @@ import App from "./app-logic";
     projectNode.addEventListener("click", loadProject);
   }
 
-  function displayTask(task) {
+  function displayTask(task, index) {
     // Create elements
     const taskNode = document.createElement("div");
     const checkBox = document.createElement("input");
@@ -57,9 +57,9 @@ import App from "./app-logic";
     setAttributes(checkBox, {
       "name": "task",
       "type": "checkbox",
-      "id": "task"
+      "id": `task-${index}`
     });
-    taskTitle.setAttribute("for", "task");
+    taskTitle.setAttribute("for", `task-${index}`);
     taskTitle.textContent = task.title;
     taskDueDate.textContent = task.dueDate;
     taskPriority.textContent = task.priority;
@@ -80,7 +80,7 @@ import App from "./app-logic";
   }
 
   function displayTasks(project) {
-    project.toDos.forEach(task => displayTask(task));
+    project.toDos.forEach((task, index)=> displayTask(task, index));
   }
 
   function addNewProject(input) {

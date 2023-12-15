@@ -57,7 +57,7 @@ import App from "./app-logic";
     setAttributes(checkBox, {
       "name": "task",
       "type": "checkbox",
-      "id": `task-${index}`
+      "id": `task-${index}`,
     });
     taskTitle.setAttribute("for", `task-${index}`);
     taskTitle.textContent = task.title;

@@ -156,7 +156,7 @@ import App from "./app-logic";
     const priority = document.createElement("div");
     const priorityLabel = document.createElement("label");
     const prioritySelect = document.createElement("select");
-    const priorityData = ["low", "medium", "urgent"];
+    const priorityData = ["--Please select task's priority--", "low", "medium", "urgent"];
     const buttons = document.createElement("div");
     const addBtn = document.createElement("button");
     const cancelBtn = document.createElement("button");
@@ -168,9 +168,10 @@ import App from "./app-logic";
     priorityLabel.textContent = "Priority:";
     addBtn.textContent = "Add";
     cancelBtn.textContent = "Cancel";
-    priorityData.forEach(data => {
+    priorityData.forEach((data, index) => {
       const option = document.createElement("option");
       option.textContent = data;
+      if (index === 0) option.value = "";
       prioritySelect.append(option);
     });
 
@@ -182,6 +183,7 @@ import App from "./app-logic";
       "name": "title",
       "id": "title",
       "placeholder": "Grocery",
+      "required": "",
     });
 
     descriptionLabel.setAttribute("for", "dscrp");
@@ -190,6 +192,7 @@ import App from "./app-logic";
       "id": "dscrp",
       "placeholder": "Buy bread, etc.",
       "rows": "5",
+      "required": "",
     });
 
     dueDateLabel.setAttribute("for", "due-date");
@@ -197,15 +200,17 @@ import App from "./app-logic";
       "type": "date",
       "name": "due-date",
       "id": "due-date",
+      "required": "",
     });
 
     priorityLabel.setAttribute("for", "priority");
     setAttributes(prioritySelect, {
       "name": "priority",
       "id": "priority",
+      "required": "",
     });
 
-    cancelBtn.setAttribute("formmethod", "dialog");
+    cancelBtn.setAttribute("type", "button");
 
     title.classList.add("task-title");
     description.classList.add("dscrp");
@@ -226,12 +231,15 @@ import App from "./app-logic";
 
     // Add event listeners
     addBtn.addEventListener("click", (e) => {
+      if (todoForm.checkValidity()) {
       e.preventDefault();
       const formData = new FormData(todoForm);
       addNewTask(formData);
       todoForm.reset();
       dialog.close();
+      }
     });
+    cancelBtn.addEventListener("click", closeDialog);
   }
 
   function addNewTask(formData) {
@@ -252,6 +260,10 @@ import App from "./app-logic";
   function removeInput() {
     sidebar.removeChild(sidebar.lastChild);
     sidebar.append(addProject);
+  }
+
+  function closeDialog() {
+    dialog.close();
   }
 
   function showDialog() {

@@ -14,6 +14,10 @@ class Project {
                              formData.get("priority"));
     this.toDos.push(newToDo);
   }
+
+  removeToDo(index) {
+    this.toDos.splice(index, 1);
+  }
 }
 
 export default Project;

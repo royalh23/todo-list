@@ -73,6 +73,27 @@ import App from "./app-logic";
     // Append elements
     taskNode.append(checkBox, taskTitle, taskDueDate, taskPriority, removeBtn, editBtn);
     tasks.append(taskNode);
+
+    // Add event listeners to buttons 
+    removeBtn.addEventListener("click", () => {
+      removeTask(index);
+    });
+    // editBtn.addEventListener("click", );
+  }
+
+  function removeTask(index) {
+    // Set a flag for the selected project
+    let selected;
+
+    // Remove task from selected project
+    App.projects.forEach(project => {
+      if (project.selected) {
+        project.removeToDo(index);
+        selected = project;
+      }
+    });
+    tasks.textContent = "";
+    displayTasks(selected);
   }
 
   function displayProjects() {

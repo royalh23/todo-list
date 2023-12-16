@@ -132,10 +132,9 @@ button:active {
   border-radius: 5px;
 }
 
-.add-project-input-field:focus,
-#todo-form input:focus, 
-#todo-form textarea:focus,
-#todo-form select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   box-shadow: 4px 4px 5px rgb(220, 220, 220);
 }

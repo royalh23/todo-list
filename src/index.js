@@ -162,10 +162,10 @@ import App from "./app-logic";
     const cancelBtn = document.createElement("button");
 
     // Set text content
-    titleLabel.textContent = "Title:";
-    descriptionLabel.textContent = "Description:";
-    dueDateLabel.textContent = "Due date:";
-    priorityLabel.textContent = "Priority:";
+    titleLabel.textContent = "Title*:";
+    descriptionLabel.textContent = "Description*:";
+    dueDateLabel.textContent = "Due date*:";
+    priorityLabel.textContent = "Priority*:";
     addBtn.textContent = "Add";
     cancelBtn.textContent = "Cancel";
     priorityData.forEach((data, index) => {

@@ -142,8 +142,6 @@ import App from "./app-logic";
   }
 
   function createToDoForm() {
-    main.removeChild(addTask);
-
     // Create elements
     const todoForm = document.createElement("form");
     const title = document.createElement("div");
@@ -207,7 +205,7 @@ import App from "./app-logic";
       "id": "priority",
     });
 
-    cancelBtn.setAttribute("type", "button");
+    cancelBtn.setAttribute("formmethod", "dialog");
 
     title.classList.add("task-title");
     description.classList.add("dscrp");
@@ -224,15 +222,16 @@ import App from "./app-logic";
     priority.append(priorityLabel, prioritySelect);
     buttons.append(addBtn, cancelBtn);
     todoForm.append(title, description, dueDate, priority, buttons);
-    main.append(todoForm);
+    dialog.append(todoForm);
 
     // Add event listeners
     addBtn.addEventListener("click", (e) => {
       e.preventDefault();
       const formData = new FormData(todoForm);
       addNewTask(formData);
+      todoForm.reset();
+      dialog.close();
     });
-    cancelBtn.addEventListener("click", removeTaskForm);
   }
 
   function addNewTask(formData) {
@@ -248,7 +247,6 @@ import App from "./app-logic";
     });
     tasks.textContent = "";
     displayTasks(selected);
-    removeTaskForm();
   }
 
   function removeInput() {
@@ -256,13 +254,13 @@ import App from "./app-logic";
     sidebar.append(addProject);
   }
 
-  function removeTaskForm() {
-    main.removeChild(main.lastChild);
-    main.append(addTask);
+  function showDialog() {
+    dialog.showModal();
   }
 
   // Create elements
   const content = document.getElementById("content");
+  const dialog = document.createElement("dialog");
   const header = document.createElement("div");
   const sidebar = document.createElement("div");
   const main = document.createElement("div");
@@ -282,6 +280,9 @@ import App from "./app-logic";
   addTaskIcon.src = Plus;
   addTaskIcon.alt = "Add Task icon";
   const addTaskText = document.createElement("div");
+
+  // Create ToDo form and append it to dialog
+  createToDoForm();
 
   // Add classes
   header.classList.add("header");
@@ -307,7 +308,7 @@ import App from "./app-logic";
   addProject.append(addProjectIcon, addProjectText);
   addTask.append(addTaskIcon, addTaskText);
   sidebar.append(projectsTitle, projects);
-  content.append(header, sidebar, main);
+  content.append(dialog, header, sidebar, main);
 
   // Initialize projects
   App.initializeProjects();
@@ -324,5 +325,5 @@ import App from "./app-logic";
   // Add event listeners to addProject and addTask elements to collect input
   // from them and create projects and todos correspondingly
   addProject.addEventListener("click", createProjectInput);
-  addTask.addEventListener("click", createToDoForm);
+  addTask.addEventListener("click", showDialog);
 })();

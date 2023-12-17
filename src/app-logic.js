@@ -14,7 +14,11 @@ const App = (function() {
     projects.push(newProject);
   }
 
-  return {projects, initializeProjects, createProject};
+  function removeProject(index) {
+    projects.splice(index, 1);
+  }
+
+  return {projects, initializeProjects, createProject, removeProject};
 })();
 
 export default App;

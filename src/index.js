@@ -1,6 +1,8 @@
 import "./style.css";
 import ProjectIcon from "./svg-icons/project-icon.svg";
-import Plus from "./svg-icons/plus.svg"; 
+import PlusIcon from "./svg-icons/plus.svg"; 
+import BlackRemoveIcon from "./svg-icons/black-remove.svg";
+import RedRemoveIcon from "./svg-icons/red-remove.svg";
 import App from "./app-logic";
 
 (() => {
@@ -12,6 +14,7 @@ import App from "./app-logic";
   }
 
   function loadProject(e) {
+    if (!addTask.hasChildNodes()) addTask.append(addTaskIcon, addTaskText);
     const clickedProject = App.projects[e.currentTarget.dataset.index];
     App.projects.forEach(project => project.selected = false);
     clickedProject.selected = true;
@@ -25,22 +28,55 @@ import App from "./app-logic";
     const projectNode = document.createElement("div");
     const projectIcon = new Image();
     const projectName = document.createElement("div");
+    const removeIcon = new Image();
   
     // Set project elements' content
     projectIcon.src = ProjectIcon;
     projectIcon.alt = "Project Icon";
     projectName.textContent = project.name;
+    removeIcon.src = BlackRemoveIcon;
+    removeIcon.alt = "Remove Icon";
   
     // Add project elements' classes and dataset
-    projectNode.classList.add("app-item");
+    projectNode.classList.add("project-item");
     projectNode.dataset.index = `${index}`;
   
     // Append project elements accordingly
-    projectNode.append(projectIcon, projectName);
+    projectNode.append(projectIcon, projectName, removeIcon);
     projects.appendChild(projectNode);
 
-    // Add event listener to each project node
+    // Add event listener to each project node and removeIcon
     projectNode.addEventListener("click", loadProject);
+
+    removeIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      removeProject(project, index);
+    });
+
+    projectNode.addEventListener("mouseover", () => {
+      removeIcon.style.visibility = "visible";
+    });
+    
+    projectNode.addEventListener("mouseout", () => {
+      removeIcon.style.visibility = "hidden";
+    });
+
+    // Make removeIcon red when it's on hover
+    removeIcon.addEventListener("mouseover", () => removeIcon.src = RedRemoveIcon);
+    removeIcon.addEventListener("mouseout", () => removeIcon.src = BlackRemoveIcon);
+  }
+
+  function removeProject(project, index) {
+    // Remove project's main page contents if it was selected
+    if (project.selected) {
+      tasksHeader.textContent = "";
+      tasks.textContent = "";
+      addTask.textContent = "";
+    }
+
+    App.removeProject(index);
+    projects.textContent = "";
+    displayProjects();
   }
 
   function displayTask(task, index) {
@@ -336,7 +372,7 @@ import App from "./app-logic";
   const projects = document.createElement("div");
   const addProject = document.createElement("div");
   const addProjectIcon = new Image();
-  addProjectIcon.src = Plus;
+  addProjectIcon.src = PlusIcon;
   addProjectIcon.alt = "Add Project Icon";
   const addProjectText = document.createElement("div");
 
@@ -344,7 +380,7 @@ import App from "./app-logic";
   const tasks = document.createElement("div");
   const addTask = document.createElement("div");
   const addTaskIcon = new Image();
-  addTaskIcon.src = Plus;
+  addTaskIcon.src = PlusIcon;
   addTaskIcon.alt = "Add Task icon";
   const addTaskText = document.createElement("div");
 

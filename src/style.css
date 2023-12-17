@@ -27,6 +27,14 @@ body {
   height: inherit;
 }
 
+.sidebar, 
+.main,
+.tasks, 
+.projects {
+  display: flex;
+  flex-direction: column;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -39,13 +47,26 @@ body {
 }
 
 .sidebar {
+  gap: 15px;
   background-color: #ddd;
   padding: 20px;
+}
+
+.main {
+  gap: 15px;
+}
+
+.tasks {
+  gap: 12px;
 }
 
 .title {
   font-weight: bold;
   font-size: 1.8rem;
+}
+
+.projects {
+  gap: 5px;
 }
 
 .app-item {

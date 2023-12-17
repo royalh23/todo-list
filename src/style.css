@@ -108,7 +108,7 @@ button:active {
   background-color: rgb(243, 59, 90);
 }
 
-.edit-btn {
+.edit-btn, .save-btn {
   background-color: rgb(6, 149, 27);
 }
 

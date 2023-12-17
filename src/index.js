@@ -78,7 +78,19 @@ import App from "./app-logic";
     removeBtn.addEventListener("click", () => {
       removeTask(index);
     });
-    // editBtn.addEventListener("click", );
+    editBtn.addEventListener("click", () => {
+      editTask(task);
+    });
+  }
+
+  function editTask(task) {
+    editDialog.textContent = "";
+    createToDoForm(editDialog, "save", task,
+                                       task.title,
+                                       task.description,
+                                       task.dueDate,
+                                       task.priority);
+    showDialog(editDialog);
   }
 
   function removeTask(index) {
@@ -141,7 +153,11 @@ import App from "./app-logic";
     cancelBtn.addEventListener("click", removeInput);
   }
 
-  function createToDoForm() {
+  function createToDoForm(dialog, btnName, task = null,
+                                           titleValue = "",
+                                           dscrpValue = "",
+                                           dueDateValue = "",
+                                           priorityValue = "") {
     // Create elements
     const todoForm = document.createElement("form");
     const title = document.createElement("div");
@@ -158,7 +174,6 @@ import App from "./app-logic";
     const prioritySelect = document.createElement("select");
     const priorityData = ["--Please select task's priority--", "low", "medium", "urgent"];
     const buttons = document.createElement("div");
-    const addBtn = document.createElement("button");
     const cancelBtn = document.createElement("button");
 
     // Set text content
@@ -166,7 +181,6 @@ import App from "./app-logic";
     descriptionLabel.textContent = "Description*:";
     dueDateLabel.textContent = "Due date*:";
     priorityLabel.textContent = "Priority*:";
-    addBtn.textContent = "Add";
     cancelBtn.textContent = "Cancel";
     priorityData.forEach((data, index) => {
       const option = document.createElement("option");
@@ -184,6 +198,7 @@ import App from "./app-logic";
       "id": "title",
       "placeholder": "Grocery",
       "required": "",
+      "value": `${titleValue}`,
     });
 
     descriptionLabel.setAttribute("for", "dscrp");
@@ -194,6 +209,7 @@ import App from "./app-logic";
       "rows": "5",
       "required": "",
     });
+    descriptionInput.value = dscrpValue;
 
     dueDateLabel.setAttribute("for", "due-date");
     setAttributes(dueDateInput, {
@@ -201,6 +217,7 @@ import App from "./app-logic";
       "name": "due-date",
       "id": "due-date",
       "required": "",
+      "value": `${dueDateValue}`,
     });
 
     priorityLabel.setAttribute("for", "priority");
@@ -209,6 +226,7 @@ import App from "./app-logic";
       "id": "priority",
       "required": "",
     });
+    prioritySelect.value = priorityValue;
 
     cancelBtn.setAttribute("type", "button");
 
@@ -217,7 +235,6 @@ import App from "./app-logic";
     dueDate.classList.add("due-date");
     priority.classList.add("priority");
     buttons.classList.add("form-buttons");
-    addBtn.classList.add("add-btn");
     cancelBtn.classList.add("cancel-btn");
 
     // Append elements
@@ -225,21 +242,58 @@ import App from "./app-logic";
     description.append(descriptionLabel, descriptionInput);
     dueDate.append(dueDateLabel, dueDateInput);
     priority.append(priorityLabel, prioritySelect);
-    buttons.append(addBtn, cancelBtn);
+    buttons.append(cancelBtn);
     todoForm.append(title, description, dueDate, priority, buttons);
     dialog.append(todoForm);
 
-    // Add event listeners
-    addBtn.addEventListener("click", (e) => {
-      if (todoForm.checkValidity()) {
-      e.preventDefault();
-      const formData = new FormData(todoForm);
-      addNewTask(formData);
-      todoForm.reset();
-      dialog.close();
-      }
+    // Create button depending on btnName
+    if (btnName === "add") {
+      // Create addBtn
+      const addBtn = document.createElement("button");
+      addBtn.textContent = "Add";
+      addBtn.classList.add("add-btn");
+      buttons.insertBefore(addBtn, cancelBtn);
+
+      // Add event listener to addBtn
+      addBtn.addEventListener("click", (e) => {
+        if (todoForm.checkValidity()) {
+          e.preventDefault();
+          const formData = new FormData(todoForm);
+          addNewTask(formData);
+          todoForm.reset();
+          dialog.close();
+        }
+     });
+    } else {
+      // Create saveBtn
+      const saveBtn = document.createElement("button");
+      saveBtn.textContent = "Save";
+      saveBtn.classList.add("save-btn");
+      buttons.insertBefore(saveBtn, cancelBtn);
+
+      // Add event listener to saveBtn
+      saveBtn.addEventListener("click", (e) => {
+        if (todoForm.checkValidity()) {
+          let selected;
+          e.preventDefault();
+          const formData = new FormData(todoForm);
+          task.editTodo(formData);
+          todoForm.reset();
+          dialog.close();
+          tasks.textContent = "";
+          App.projects.forEach(project => {
+            if (project.selected) {
+              selected = project
+            }
+          });
+          displayTasks(selected);
+        }
+      })
+    }
+
+    cancelBtn.addEventListener("click", () => {
+      closeDialog(dialog);
     });
-    cancelBtn.addEventListener("click", closeDialog);
   }
 
   function addNewTask(formData) {
@@ -262,17 +316,18 @@ import App from "./app-logic";
     sidebar.append(addProject);
   }
 
-  function closeDialog() {
+  function closeDialog(dialog) {
     dialog.close();
   }
 
-  function showDialog() {
+  function showDialog(dialog) {
     dialog.showModal();
   }
 
   // Create elements
   const content = document.getElementById("content");
-  const dialog = document.createElement("dialog");
+  const addDialog = document.createElement("dialog");
+  const editDialog = document.createElement("dialog")
   const header = document.createElement("div");
   const sidebar = document.createElement("div");
   const main = document.createElement("div");
@@ -294,7 +349,7 @@ import App from "./app-logic";
   const addTaskText = document.createElement("div");
 
   // Create ToDo form and append it to dialog
-  createToDoForm();
+  createToDoForm(addDialog, "add");
 
   // Add classes
   header.classList.add("header");
@@ -320,7 +375,7 @@ import App from "./app-logic";
   addProject.append(addProjectIcon, addProjectText);
   addTask.append(addTaskIcon, addTaskText);
   sidebar.append(projectsTitle, projects);
-  content.append(dialog, header, sidebar, main);
+  content.append(addDialog, editDialog, header, sidebar, main);
 
   // Initialize projects
   App.initializeProjects();
@@ -337,5 +392,5 @@ import App from "./app-logic";
   // Add event listeners to addProject and addTask elements to collect input
   // from them and create projects and todos correspondingly
   addProject.addEventListener("click", createProjectInput);
-  addTask.addEventListener("click", showDialog);
+  addTask.addEventListener("click", () => showDialog(addDialog));
 })();

@@ -414,7 +414,7 @@ import App from "./app-logic";
   content.append(addDialog, editDialog, header, sidebar, main);
 
   // Initialize projects
-  App.initializeProjects();
+  App.initializeApp();
 
   // Display projects
   displayProjects();

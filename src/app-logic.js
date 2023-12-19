@@ -3,7 +3,7 @@ import Project from "./project";
 const App = (function() {
   const projects = [];
 
-  function initializeProjects() {
+  function initializeApp() {
     const defaultProject = new Project("Default Project");  
     defaultProject.selected = true;
     projects.push(defaultProject);
@@ -18,7 +18,7 @@ const App = (function() {
     projects.splice(index, 1);
   }
 
-  return {projects, initializeProjects, createProject, removeProject};
+  return {projects, initializeApp, createProject, removeProject};
 })();
 
 export default App;

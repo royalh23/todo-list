@@ -53,13 +53,9 @@ import App from "./app-logic";
       removeProject(project, index);
     });
 
-    projectNode.addEventListener("mouseover", () => {
-      removeIcon.style.visibility = "visible";
-    });
+    projectNode.addEventListener("mouseover", () => removeIcon.style.visibility = "visible");
     
-    projectNode.addEventListener("mouseout", () => {
-      removeIcon.style.visibility = "hidden";
-    });
+    projectNode.addEventListener("mouseout", () => removeIcon.style.visibility = "hidden");
 
     // Make removeIcon red when it's on hover
     removeIcon.addEventListener("mouseover", () => removeIcon.src = RedRemoveIcon);

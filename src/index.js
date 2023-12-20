@@ -131,12 +131,12 @@ import App from "./app-logic";
 
     // Add event listeners to buttons 
     removeBtn.addEventListener("click", () => removeTask(index));
-    editBtn.addEventListener("click", () => editTask(task));
+    editBtn.addEventListener("click", () => editTask(task, index));
   }
 
-  function editTask(task) {
+  function editTask(task, index) {
     editDialog.textContent = "";
-    createToDoForm(editDialog, "save", task,
+    createToDoForm(editDialog, "save", index,
                                        task.title,
                                        task.description,
                                        task.dueDate,
@@ -194,7 +194,7 @@ import App from "./app-logic";
     sidebar.append(addProject);
   }
 
-  function createToDoForm(dialog, btnName, task = null,
+  function createToDoForm(dialog, btnName, index = null,
                                            titleValue = "",
                                            dscrpValue = "",
                                            dueDateValue = "",
@@ -318,15 +318,15 @@ import App from "./app-logic";
           let selected;
           e.preventDefault();
           const formData = new FormData(todoForm);
-          task.editTodo(formData);
+          App.projects.forEach(project => {
+            if (project.selected) {
+              project.editToDo(index, formData);
+              selected = project;
+            }
+          });
           todoForm.reset();
           dialog.close();
           tasks.textContent = "";
-          App.projects.forEach(project => {
-            if (project.selected) {
-              selected = project
-            }
-          });
           displayTasks(selected);
         }
       });

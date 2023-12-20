@@ -6,21 +6,15 @@ import RedRemoveIcon from "./svg-icons/red-remove.svg";
 import App from "./app-logic";
 
 (() => {
-  // Create a helper for setting attributes
-  function setAttributes(el, attrs) {
-    Object.keys(attrs).forEach(attr => {
-      el.setAttribute(attr, attrs[attr]);
-    });
+  function addNewProject(input) {
+    App.createProject(input);
+    projects.textContent = "";
+    displayProjects();
+    removeInput();
   }
-
-  function loadProject(e) {
-    if (!addTask.hasChildNodes()) addTask.append(addTaskIcon, addTaskText);
-    const clickedProject = App.projects[e.currentTarget.dataset.index];
-    App.projects.forEach(project => project.selected = false);
-    clickedProject.selected = true;
-    tasksHeader.textContent = clickedProject.name;
-    tasks.textContent = "";
-    displayTasks(clickedProject);
+  
+  function displayProjects() {
+    App.projects.forEach((project, index) => displayProject(project, index));
   }
 
   function displayProject(project, index) {
@@ -74,7 +68,36 @@ import App from "./app-logic";
     projects.textContent = "";
     displayProjects();
   }
+  
+  function loadProject(e) {
+    if (!addTask.hasChildNodes()) addTask.append(addTaskIcon, addTaskText);
+    const clickedProject = App.projects[e.currentTarget.dataset.index];
+    App.projects.forEach(project => project.selected = false);
+    clickedProject.selected = true;
+    tasksHeader.textContent = clickedProject.name;
+    tasks.textContent = "";
+    displayTasks(clickedProject);
+  }
+  
+  function addNewTask(formData) {
+    // Set a flag for the selected project
+    let selected;
 
+    // Add the task to the selected project only
+    App.projects.forEach(project => {
+      if (project.selected) {
+        project.createToDo(formData);
+        selected = project;
+      }
+    });
+    tasks.textContent = "";
+    displayTasks(selected);
+  }
+  
+  function displayTasks(project) {
+    project.toDos.forEach((task, index)=> displayTask(task, index));
+  }
+  
   function displayTask(task, index) {
     // Create elements
     const taskNode = document.createElement("div");
@@ -120,7 +143,7 @@ import App from "./app-logic";
                                        task.priority);
     showDialog(editDialog);
   }
-
+  
   function removeTask(index) {
     // Set a flag for the selected project
     let selected;
@@ -135,22 +158,7 @@ import App from "./app-logic";
     tasks.textContent = "";
     displayTasks(selected);
   }
-
-  function displayProjects() {
-    App.projects.forEach((project, index) => displayProject(project, index));
-  }
-
-  function displayTasks(project) {
-    project.toDos.forEach((task, index)=> displayTask(task, index));
-  }
-
-  function addNewProject(input) {
-    App.createProject(input);
-    projects.textContent = "";
-    displayProjects();
-    removeInput();
-  }
-
+  
   function createProjectInput() {
     sidebar.removeChild(addProject);
 
@@ -179,6 +187,11 @@ import App from "./app-logic";
       addNewProject(projectInputField);
     });
     cancelBtn.addEventListener("click", removeInput);
+  }
+
+  function removeInput() {
+    sidebar.removeChild(sidebar.lastChild);
+    sidebar.append(addProject);
   }
 
   function createToDoForm(dialog, btnName, task = null,
@@ -324,35 +337,22 @@ import App from "./app-logic";
       closeDialog(dialog);
     });
   }
-
-  function addNewTask(formData) {
-    // Set a flag for the selected project
-    let selected;
-
-    // Add the task to the selected project only
-    App.projects.forEach(project => {
-      if (project.selected) {
-        project.createToDo(formData);
-        selected = project;
-      }
+  
+  // Create a helper for setting attributes
+  function setAttributes(el, attrs) {
+    Object.keys(attrs).forEach(attr => {
+      el.setAttribute(attr, attrs[attr]);
     });
-    tasks.textContent = "";
-    displayTasks(selected);
   }
-
-  function removeInput() {
-    sidebar.removeChild(sidebar.lastChild);
-    sidebar.append(addProject);
-  }
-
-  function closeDialog(dialog) {
-    dialog.close();
-  }
-
+  
   function showDialog(dialog) {
     dialog.showModal();
   }
-
+  
+  function closeDialog(dialog) {
+    dialog.close();
+  }
+  
   // Create elements
   const content = document.getElementById("content");
   const addDialog = document.createElement("dialog");

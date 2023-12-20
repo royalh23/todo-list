@@ -316,7 +316,7 @@ import App from "./app-logic";
           });
           displayTasks(selected);
         }
-      })
+      });
     }
 
     cancelBtn.addEventListener("click", () => {

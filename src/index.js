@@ -107,12 +107,8 @@ import App from "./app-logic";
     tasks.append(taskNode);
 
     // Add event listeners to buttons 
-    removeBtn.addEventListener("click", () => {
-      removeTask(index);
-    });
-    editBtn.addEventListener("click", () => {
-      editTask(task);
-    });
+    removeBtn.addEventListener("click", () => removeTask(index));
+    editBtn.addEventListener("click", () => editTask(task));
   }
 
   function editTask(task) {

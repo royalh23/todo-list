@@ -328,6 +328,7 @@ import App from "./app-logic";
     }
 
     cancelBtn.addEventListener("click", () => {
+      todoForm.reset();
       closeDialog(dialog);
     });
   }

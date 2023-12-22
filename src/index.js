@@ -4,6 +4,7 @@ import PlusIcon from "./svg-icons/plus.svg";
 import BlackRemoveIcon from "./svg-icons/black-remove.svg";
 import RedRemoveIcon from "./svg-icons/red-remove.svg";
 import App from "./app-logic";
+import Project from "./project";
 
 (() => {
   function addNewProject(input) {
@@ -427,5 +428,24 @@ import App from "./app-logic";
 
     // Display projects
     displayProjects();
-  } 
+  } else {
+    let selected;
+
+    Object.keys(localStorage).forEach(key => {
+      const parsedProject = JSON.parse(localStorage.getItem(key));
+      const newProject = new Project(parsedProject.name,
+                                     parsedProject.toDos,
+                                     parsedProject.selected);
+      App.projects.push(newProject);
+
+      if (Object.keys(localStorage)[0] === key) {
+        selected = newProject;
+        tasksHeader.textContent = selected.name;
+      }
+    });
+
+    displayProjects();
+
+    displayTasks(selected);
+  }
 })();

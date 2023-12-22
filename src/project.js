@@ -1,10 +1,10 @@
 import ToDo from "./todo";
 
 class Project {
-  constructor(name, toDos = []) {
+  constructor(name, toDos = [], selected = false) {
     this.name = name;
     this.toDos = toDos;
-    this.selected = false;
+    this.selected = selected;
   }
 
   #updateLocalStorage() {

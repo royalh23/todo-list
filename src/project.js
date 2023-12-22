@@ -1,24 +1,14 @@
 import ToDo from "./todo";
 
 class Project {
-  constructor(name) {
+  constructor(name, toDos = []) {
     this.name = name;
-    this.toDos = [];
+    this.toDos = toDos;
+    this.selected = false;
   }
-
-  #selected = false;
 
   #updateLocalStorage() {
     localStorage.setItem(this.name, JSON.stringify(this));
-  }
-
-  get selected() {
-    return this.#selected;
-  }
-
-  set selected(value) {
-    this.#selected = value;
-    this.#updateLocalStorage;
   }
 
   createToDo(formData) {

@@ -72,8 +72,12 @@ import App from "./app-logic";
   function loadProject(e) {
     if (!addTask.hasChildNodes()) addTask.append(addTaskIcon, addTaskText);
     const clickedProject = App.projects[e.currentTarget.dataset.index];
-    App.projects.forEach(project => project.selected = false);
+    App.projects.forEach(project => {
+      project.selected = false;
+      localStorage.setItem(project.name, JSON.stringify(project));
+    });
     clickedProject.selected = true;
+    localStorage.setItem(clickedProject.name, JSON.stringify(clickedProject));
     tasksHeader.textContent = clickedProject.name;
     tasks.textContent = "";
     displayTasks(clickedProject);

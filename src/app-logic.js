@@ -3,20 +3,16 @@ import Project from "./project";
 const App = (function() {
   const projects = [];
 
-  function updateLocalStorage(projectName, project) {
-    localStorage.setItem(projectName, project);
-  }
-
   function initializeApp() {
     const defaultProject = new Project("Default Project");  
-    updateLocalStorage("Default Project", JSON.stringify(defaultProject));
+    localStorage.setItem(defaultProject.name, JSON.stringify(defaultProject));
     defaultProject.selected = true;
     projects.push(defaultProject);
   }
 
   function createProject(input) {
     const newProject = new Project(input.value);
-    updateLocalStorage(input.value, JSON.stringify(newProject));
+    localStorage.setItem(input.value, JSON.stringify(newProject));
     projects.push(newProject);
   }
 

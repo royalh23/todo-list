@@ -4,11 +4,21 @@ class Project {
   constructor(name) {
     this.name = name;
     this.toDos = [];
-    this.selected = false;
   }
 
-   #updateLocalStorage() {
+  #selected = false;
+
+  #updateLocalStorage() {
     localStorage.setItem(this.name, JSON.stringify(this));
+  }
+
+  get selected() {
+    return this.#selected;
+  }
+
+  set selected(value) {
+    this.#selected = value;
+    this.#updateLocalStorage;
   }
 
   createToDo(formData) {

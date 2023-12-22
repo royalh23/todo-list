@@ -5,8 +5,8 @@ const App = (function() {
 
   function initializeApp() {
     const defaultProject = new Project("Default Project");  
-    defaultProject.selected = true;
     localStorage.setItem(defaultProject.name, JSON.stringify(defaultProject));
+    defaultProject.selected = true;
     projects.push(defaultProject);
   }
 

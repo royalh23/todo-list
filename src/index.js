@@ -405,13 +405,7 @@ import App from "./app-logic";
   addTask.append(addTaskIcon, addTaskText);
   sidebar.append(projectsTitle, projects);
   content.append(addDialog, editDialog, header, sidebar, main);
-
-  // Initialize the app
-  App.initializeApp();
-
-  // Display projects
-  displayProjects();
-
+  
   // Display "add project" button
   sidebar.append(addProject);
 
@@ -422,4 +416,12 @@ import App from "./app-logic";
   // from them and create projects and todos correspondingly
   addProject.addEventListener("click", createProjectInput);
   addTask.addEventListener("click", () => showDialog(addDialog));
+
+  if (localStorage.length == 0) {
+    // Initialize the app
+    App.initializeApp();
+
+    // Display projects
+    displayProjects();
+  } 
 })();

@@ -176,6 +176,7 @@ import Project from "./project";
     //Add classes
     projectInput.classList.add("add-project-input");
     projectInputField.classList.add("add-project-input-field");
+    projectInputField.required = true;
     addBtn.classList.add("add-btn");
     cancelBtn.classList.add("cancel-btn");
 
@@ -189,7 +190,7 @@ import Project from "./project";
 
     // Add event listeners to buttons
     addBtn.addEventListener("click", () => {
-      addNewProject(projectInputField);
+      if (projectInputField.checkValidity()) addNewProject(projectInputField);
     });
     cancelBtn.addEventListener("click", removeInput);
   }

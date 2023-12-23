@@ -130,6 +130,14 @@ img[src$="svg"] {
   height: 40px;
 }
 
+.add-project-input-field:invalid {
+  border: 2px solid red;
+}
+
+.add-project-input-field:valid {
+  border: 2px solid rgb(2, 174, 2);
+}
+
 button {
   cursor: pointer;
   color: #fff;

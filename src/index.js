@@ -8,7 +8,7 @@ import Project from "./project";
 
 (() => {
   function addNewProject(input) {
-    App.createProject(input);
+    App.createProject(input, (+projects.lastChild.dataset.index + 1));
     projects.textContent = "";
     displayProjects();
     removeInput();
@@ -357,6 +357,27 @@ import Project from "./project";
   function closeDialog(dialog) {
     dialog.close();
   }
+
+  function loadFromLocalStorage() {
+    Object.keys(localStorage).forEach(key => {
+      const parsedProject = JSON.parse(localStorage.getItem(key));
+      const newProject = new Project(parsedProject.name,
+                                     parsedProject.index,
+                                     parsedProject.toDos,
+                                     parsedProject.selected);
+      App.projects.push(newProject);
+    });
+
+    // Sort projects array so that they are displayed in correct order after
+    // the page is reloaded
+    App.projects.sort((a, b) => a.index - b.index);
+
+    displayProjects();
+
+    // Display first project after each reload
+    tasksHeader.textContent = App.projects[0].name;
+    displayTasks(App.projects[0]);
+  }
   
   // Create elements
   const content = document.getElementById("content");
@@ -422,6 +443,8 @@ import Project from "./project";
   addProject.addEventListener("click", createProjectInput);
   addTask.addEventListener("click", () => showDialog(addDialog));
 
+  // If localStorage is empty, initialize app. Otherwise, load projects and tasks
+  // from localStorage
   if (localStorage.length == 0) {
     // Initialize the app
     App.initializeApp();
@@ -429,23 +452,6 @@ import Project from "./project";
     // Display projects
     displayProjects();
   } else {
-    let selected;
-
-    Object.keys(localStorage).forEach(key => {
-      const parsedProject = JSON.parse(localStorage.getItem(key));
-      const newProject = new Project(parsedProject.name,
-                                     parsedProject.toDos,
-                                     parsedProject.selected);
-      App.projects.push(newProject);
-
-      if (Object.keys(localStorage)[0] === key) {
-        selected = newProject;
-        tasksHeader.textContent = selected.name;
-      }
-    });
-
-    displayProjects();
-
-    displayTasks(selected);
+    loadFromLocalStorage();
   }
 })();

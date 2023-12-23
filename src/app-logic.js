@@ -4,14 +4,14 @@ const App = (function() {
   const projects = [];
 
   function initializeApp() {
-    const defaultProject = new Project("Default Project");  
+    const defaultProject = new Project("Default Project", 0);  
     defaultProject.selected = true;
     localStorage.setItem(defaultProject.name, JSON.stringify(defaultProject));
     projects.push(defaultProject);
   }
 
-  function createProject(input) {
-    const newProject = new Project(input.value);
+  function createProject(input, index) {
+    const newProject = new Project(input.value, index);
     localStorage.setItem(input.value, JSON.stringify(newProject));
     projects.push(newProject);
   }

@@ -1,8 +1,9 @@
 import ToDo from "./todo";
 
 class Project {
-  constructor(name, toDos = [], selected = false) {
+  constructor(name, index, toDos = [], selected = false) {
     this.name = name;
+    this.index = index;
     this.toDos = toDos;
     this.selected = selected;
   }

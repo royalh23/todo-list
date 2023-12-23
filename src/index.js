@@ -359,6 +359,8 @@ import Project from "./project";
   }
 
   function loadFromLocalStorage() {
+    let selectedProject;
+
     Object.keys(localStorage).forEach(key => {
       const parsedProject = JSON.parse(localStorage.getItem(key));
       const newProject = new Project(parsedProject.name,
@@ -368,15 +370,27 @@ import Project from "./project";
       App.projects.push(newProject);
     });
 
-    // Sort projects array so that they are displayed in correct order after
+    // Sort projects array so that projects are displayed in correct order after
     // the page is reloaded
     App.projects.sort((a, b) => a.index - b.index);
 
+    // After page reload, display previously selected project's tasks
+    App.projects.forEach(project => {
+      if (project.selected) {
+        selectedProject = project;
+      }
+    });
+
+    // If no project is selected, display App.projects[0]'s tasks
+    if (typeof selectedProject === "undefined") {
+      App.projects[0].selected = true;
+      selectedProject = App.projects[0];
+    }
+
     displayProjects();
 
-    // Display first project after each reload
-    tasksHeader.textContent = App.projects[0].name;
-    displayTasks(App.projects[0]);
+    tasksHeader.textContent = selectedProject.name;
+    displayTasks(selectedProject);
   }
   
   // Create elements

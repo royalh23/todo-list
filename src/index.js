@@ -8,7 +8,11 @@ import Project from "./project";
 
 (() => {
   function addNewProject(input) {
-    App.createProject(input, (+projects.lastChild.dataset.index + 1));
+    if (projects.contains(projects.lastChild)) {
+      App.createProject(input, (+projects.lastChild.dataset.index + 1));
+    } else {
+      App.createProject(input, 0);
+    }
     projects.textContent = "";
     displayProjects();
     removeInput();
